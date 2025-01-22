@@ -8,10 +8,12 @@ import Header from "../Landing/Header";
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
-  const { login } = useAuth(); // Get login function from context
+  const { login } = useAuth();
 
-  const [email, setEmail] = useState(""); // State for email
-  const [password, setPassword] = useState(""); // State for password
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -19,43 +21,29 @@ const SignIn = () => {
   const togglePasswordVisibility1 = () => {
     setShowPassword1((prev) => !prev);
   };
-
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   const handleLogin = async () => {
     try {
-      const response = await axios.post("/api/v1/auth/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post("/api/v1/auth/login", formData);
+      alert(data.message);
 
-      // Check if the response is valid and contains data
-      if (response && response.data) {
-        const { token, email } = response.data;
+      // Store the token in sessionStorage and update the context
+      sessionStorage.setItem("authToken", data.token);
+      sessionStorage.setItem("role", data.role); // Store the role in sessionStorage
 
-        // Store the token in sessionStorage and update the context
-        sessionStorage.setItem("authToken", token);
+      // Use the login function from the context
+      login(data.token, data.role);
 
-        // Use the login function from the context
-        login(token, email);
-
-        // Show a success message (if you have a success alert system in place)
-        alert.success("Login successful!");
-
-        // Conditional navigation based on role (if implemented)
-        // if (data.role === "Admin") {
-        //   navigate("/admin-dashboard");
-        // } else {
-        //   navigate("/user-dashboard");
-        // }
+      // Conditional navigation based on role
+      if (data.role === "Admin") {
+        navigate("/admin-dashboard");
       } else {
-        alert.error("Failed to log in. Please try again.");
+        navigate("/user-dashboard");
       }
     } catch (error) {
-      console.error("Login error: ", error);
-      if (error.response && error.response.data && error.response.data.error) {
-        alert(error.response.data.error); // Display error from the server response
-      } else {
-        alert("An unexpected error occurred.");
-      }
+      alert(error.response.data.error);
     }
   };
 
@@ -90,10 +78,10 @@ const SignIn = () => {
                 </label>
                 <div className="flex items-center bg-white rounded-md relative">
                   <input
+                    name="email"
                     type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                    onChange={handleChange}
+                    value={formData.email}
                     className="w-full px-4 py-2 focus:outline-none text-black rounded-md pr-10"
                   />
                   <svg
@@ -132,10 +120,10 @@ const SignIn = () => {
                     className="w-full px-4 py-2 focus:outline-none text-black rounded-md pr-10"
                   />
                   <div
+                    name="password"
                     className="absolute right-3 cursor-pointer"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+                    onChange={handleChange}
+                    value={formData.password}
                     onClick={togglePasswordVisibility1}
                   >
                     {showPassword1 ? (

@@ -25,7 +25,6 @@ export const isRequiredSignIn = async (req, res, next) => {
 export const isAdmin = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);  // Fetch user using decoded user ID from token
-
     if (!user || user.role !== 'Admin') {
       return res.status(403).json({ error: 'Access denied, admin only' });
     }
@@ -37,16 +36,16 @@ export const isAdmin = async (req, res, next) => {
 };
 
 // Middleware to check if the user is a regular User
-export const isUser = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id);  // Fetch user using decoded user ID from token
+// export const isUser = async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.user.id);  // Fetch user using decoded user ID from token
 
-    if (!user || user.role !== 'User') {
-      return res.status(403).json({ error: 'Access denied, user only' });
-    }
+//     if (!user || user.role !== 'User') {
+//       return res.status(403).json({ error: 'Access denied, user only' });
+//     }
 
-    next();  // User is a regular user, proceed to the next middleware or route handler
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+//     next();  // User is a regular user, proceed to the next middleware or route handler
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// };

@@ -6,7 +6,9 @@ const Header = () => {
   return (
     <header className="bg-blue-900 text-white p-6 flex justify-between items-center">
       <div className="text-xl font-bold">
-        <img src={logo} alt="Team working" className="h-9 shadow-lg" />
+        <Link to="/">
+          <img src={logo} alt="Team working" className="h-9 shadow-lg" />
+        </Link>
       </div>
       <div className="flex space-x-4 ml-1">
         <Link to="/login">
