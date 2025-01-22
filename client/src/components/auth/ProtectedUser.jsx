@@ -6,7 +6,7 @@ const ProtectedUser = ({ children }) => {
   const { authData } = useAuth();
 
   // If the user is not authenticated or is not a 'User', redirect to login page
-  if (!authData.token || authData.role !== 'User') {
+  if (!authData.token) {
     navigate('/');
     return null;
   }

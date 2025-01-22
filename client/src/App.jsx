@@ -10,21 +10,25 @@ import { AuthProvider } from './components/context/AuthContext.jsx';
 import AdminDash from './components/admin/AdminDash.jsx';
 import User from './components/user/UserDash.jsx';
 import Product from './components/admin/Product.jsx';
+import SignUp from './components/auth/SignUp.jsx';
+import SignIn from './components/auth/SignIn.jsx';
 
 function App() {
   return (
     <AuthProvider>  {/* Wrap the app with AuthProvider */}
       <Router>
         <Routes>
-          <Route path="/" element={<Auth />} />
-          <Route
+          <Route path="/" element={<SignUp />} />
+          <Route path="/login" element={<SignIn />} />
+
+          {/* <Route
             path="/user-dashboard"
             element={
               <ProtectedUser>
                 <User />
               </ProtectedUser>
             }
-          />
+          /> */}
           <Route
             path="/admin-dashboard"
             element={

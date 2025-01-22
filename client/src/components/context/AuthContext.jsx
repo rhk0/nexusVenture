@@ -1,36 +1,35 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Create a context for authentication
 const AuthContext = createContext();
 
-// AuthProvider component to provide authentication context
 export const AuthProvider = ({ children }) => {
-  const [authData, setAuthData] = useState({ token: null, role: null ,name:null});
+  const [authData, setAuthData] = useState({ token: null, email: null });
 
-  // Initialize authentication state from sessionStorage on mount
   useEffect(() => {
-    const token = sessionStorage.getItem('authToken');
-    const role = sessionStorage.getItem('role');
-    if (token && role) {
-      setAuthData({ token, role });
+    const token = sessionStorage.getItem("authToken");
+    const email = sessionStorage.getItem("email");
+    if (token && email) {
+      setAuthData({ token, email });
     }
   }, []);
+  
 
   // Login function to store token and role in sessionStorage
-  const login = (token, role,name) => {
-    sessionStorage.setItem('authToken', token);
-    sessionStorage.setItem('role', role);
-    sessionStorage.setItem('name',name)
-    setAuthData({ token, role ,name});
+  const login = (token, email) => {
+    console.log("Login called with:", token, email); // Debugging log
+    sessionStorage.setItem("authToken", token);
+    sessionStorage.setItem("email", email);
+    setAuthData({ token, email });
   };
+  
 
   // Logout function to clear token and role from sessionStorage
   const logout = () => {
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('role');
-    sessionStorage.removeItem('name')
-    setAuthData({ token: null, role: null,name:null });
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("email");
+    setAuthData({ token: null, email: null });
   };
+  
 
   // Provide authentication data and login/logout functions
   return (

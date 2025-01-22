@@ -1,18 +1,41 @@
 import mongoose from 'mongoose';
-import { boolean } from 'webidl-conversions';
 
 const userSchema = new mongoose.Schema({
   
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String },
-  googleId: { type: String },
-  role:{
-    type:String,
-    required:true,
-    enum:["Admin","User"],
-    default:"User"
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  contactNo: {
+    type: String,
+    required: true,
+  },
+  whatsappNo: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  referralCode: {
+    type: String,
+  },
+  password: {
+    type: String,
+    required: true,
   }
+
+
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);

@@ -6,7 +6,7 @@ const ProtectedAdmin = ({ children }) => {
   const { authData } = useAuth();
 
   // If the user is not authenticated or is not an 'Admin', redirect to login page
-  if (!authData.token || authData.role !== 'Admin') {
+  if (!authData.token) {
     navigate('/');
     return null;
   }
